@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mindmap.controllers.Main">
+   <left>
+      <VBox prefHeight="400.0" prefWidth="44.0" style="-fx-border-width: 0 1 0 0; -fx-border-color: #ddd; -fx-padding: 10; -fx-spacing: 15;" BorderPane.alignment="CENTER">
+         <children>
+            <Ellipse fill="WHITE" onMouseClicked="#addEllipse" radiusX="20.0" radiusY="14.0" stroke="#aaaaaa" strokeType="INSIDE"  />
+            <Circle fill="WHITE" radius="20.0" stroke="#aaaaaa" strokeType="INSIDE" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="34.0" stroke="#aaaaaa" strokeType="INSIDE" width="40.0" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+   </left>
+   <center>
+      <Pane fx:id="mainPane" BorderPane.alignment="CENTER">
+         <children>
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

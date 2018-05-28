@@ -1,0 +1,12 @@
+.node .circle{
+    -fx-fill: #fff;
+    -fx-stroke: #00BCD4;
+    -fx-stroke-width:2;
+}
+.node:hover .ellipse{
+    -fx-fill: #CCFF99;
+}
+
+.node:circleClicked .ellipse{
+    -fx-fill: #CCFF99;
+}

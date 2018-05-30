@@ -20,15 +20,15 @@ public class EdgeGroup {
 
     public EdgeGroup create(Node parent){
         this.parent =parent;
-        circles =new Edge[4];
+        circles =new Edge[4]; //The four orbs around the node
         for(int i =0;i<4;i++)
         {
-            circles[i] = new Edge(5,this);
+            circles[i] = new Edge(5,this); //Radius of the orbs, the orbs are set to be circles
             circles[i].setVisible(false);
             parent.getChildren().add(circles[i]);
             circles[i].getStyleClass().add("circle");
             registerOnclick(circles[i]);
-        }
+        }   //Stick them around the node
         StackPane.setMargin(circles[0],new Insets(0,0,0,parent.getBoundsInParent().getWidth()));
         StackPane.setMargin(circles[1],new Insets(0,0,parent.getBoundsInParent().getHeight(),0));
         StackPane.setMargin(circles[2],new Insets(0,parent.getBoundsInParent().getWidth(),0,0));
@@ -38,7 +38,7 @@ public class EdgeGroup {
         return  this;
     }
 
-    private void registerVisibility(){
+    private void registerVisibility(){         //the visibility of the orbs
         this.parent.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -129,7 +129,7 @@ public class EdgeGroup {
     }
 }
 
-class Edge extends Circle{
+class Edge extends Circle{                  //The thing around the circle
     private ArrayList<Connector> connectors;
     private EdgeGroup edgeGroup;
     Edge(int r,EdgeGroup edgeGroup){

@@ -7,7 +7,7 @@ import javafx.scene.input.MouseEvent;
 
 public class ViewController {
     @FXML
-    Pane pane;
+    Pane pane = new Pane();
     public void clicked(MouseEvent mouseEvent){
 
         System.out.print("Clicked");

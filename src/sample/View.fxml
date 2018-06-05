@@ -8,13 +8,12 @@
 <?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewController">
     <left>
-        <VBox prefHeight="400.0" prefWidth="44.0" style="-fx-border-width: 0 1 0 0; -fx-border-color: #ddd; -fx-padding: 10; -fx-spacing: 15;" BorderPane.alignment="CENTER">
+        <VBox fillWidth="true" prefHeight="400.0" prefWidth="44.0" style="-fx-border-width: 0 1 0 0; -fx-border-color: #449488; -fx-padding: 10; -fx-spacing: 15;" BorderPane.alignment="CENTER">
             <children>
-                <Ellipse fill="Blue" onMouseClicked="#clicked" radiusX="20.0" radiusY="14.0" stroke="#aaaaaa" strokeType="INSIDE"  />
-                <Circle fill="WHITE" radius="20.0" stroke="#aaaaaa" strokeType="INSIDE" />
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="34.0" stroke="#aaaaaa" strokeType="INSIDE" width="40.0" />
+                <Ellipse fill="#449488" onMouseClicked="#clicked" radiusX="20.0" radiusY="14.0" stroke="#ffffff"
+                         strokeType="INSIDE"  />
             </children>
             <opaqueInsets>
                 <Insets />

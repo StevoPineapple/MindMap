@@ -10,7 +10,7 @@ public class ViewController {
     Pane pane = new Pane();
     public void clicked(MouseEvent mouseEvent){
 
-        System.out.print("Clicked");
+        System.out.println("Clicked");
         pane.getChildren().add(new EllipseNode());
     }
 }

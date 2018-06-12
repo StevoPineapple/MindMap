@@ -1,16 +1,15 @@
-package sample;
+package MindMap;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
 
 public class ViewController {
     @FXML
-    Pane pane = new Pane();
+    Pane pane;
     public void clicked(MouseEvent mouseEvent){
 
         System.out.println("Clicked");
-        pane.getChildren().add(new EllipseNode());
+        pane.getChildren().add(MMNode.create("Elps","text",pane));
     }
 }

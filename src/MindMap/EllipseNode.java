@@ -52,7 +52,7 @@ public class EllipseNode extends MMNode {
             @Override
             public void handle(MouseEvent event) {
                 //System.out.println("Dragged");
-                self.toFront();
+                //self.toFront();
                 self.setTranslateX(event.getSceneX()-posX);//-(event.getSceneX()-self.getTranslateX()));
                 self.setTranslateY(event.getSceneY()-posY);//-height);
                 /*System.out.println(self.getTranslateX()+"X");
@@ -62,10 +62,16 @@ public class EllipseNode extends MMNode {
                 System.out.println(self.getTranslateX());*/
             }
         });
-        this.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        this.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 self.toBack();
+            }
+        });
+        this.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                self.toFront();
             }
         });
     }

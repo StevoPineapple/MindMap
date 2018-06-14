@@ -1,4 +1,4 @@
-package MindMap;
+package mindmap;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;

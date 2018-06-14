@@ -1,4 +1,4 @@
-package MindMap;
+package mindmap;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;

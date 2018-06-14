@@ -1,4 +1,4 @@
-package MindMap;
+package mindmap;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

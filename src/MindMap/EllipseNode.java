@@ -5,9 +5,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Ellipse;
 
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class EllipseNode extends MMNode {
-    private String text;
+    private Text text = new Text();
     private Color fillCol;
     private Color edgeCol;
     private double radius = 30;
@@ -22,7 +23,7 @@ public class EllipseNode extends MMNode {
         //temp Color
         fillCol = Color.WHITE;
         edgeCol = Color.web("#449488");
-        text = "";
+        text.setText("text");
 
         elps.setRadiusX(width/2);
         elps.setRadiusY(height/2);
@@ -30,7 +31,7 @@ public class EllipseNode extends MMNode {
         elps.setStroke(edgeCol);
         //elps.setId("ellipse-"+nodes.size());
         elps.getStyleClass().add("ellipse");
-        getChildren().add(elps);
+        getChildren().addAll(elps,text);
         registerDrag();
         System.out.println("Create Ellipse in Constructor");
     }

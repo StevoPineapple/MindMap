@@ -9,7 +9,7 @@ public class ViewController {
     Pane pane;
     public void clicked(MouseEvent mouseEvent){
 
-        System.out.println("Clicked");
+        System.out.println("Clicked Ellipse");
         pane.getChildren().add(MMNode.create("Elps","text",pane));
     }
 }

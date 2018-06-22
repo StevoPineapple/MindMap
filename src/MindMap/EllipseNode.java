@@ -2,6 +2,7 @@ package mindmap;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -9,7 +10,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Ellipse;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+
+import java.util.ArrayList;
 
 public class EllipseNode extends MMNode {
     private Text text = new Text();
@@ -20,7 +24,15 @@ public class EllipseNode extends MMNode {
     private double height = 45;
     private double posX;// = self.getTranslateX();
     private double posY;// = self.getTranslateY();
+    private EllipseNode self = this;
+    private ArrayList<Edge> edges = new ArrayList<Edge>();
+
     Ellipse elps = new Ellipse();
+
+    EllipseNode temp;
+    double tempX;
+    double tempY;
+
 
     public EllipseNode()
     {
@@ -28,7 +40,6 @@ public class EllipseNode extends MMNode {
         fillCol = Color.WHITE;
         edgeCol = Color.web("#449488");
         text.setText("text");
-
         elps.setRadiusX(width/2);
         elps.setRadiusY(height/2);
         elps.setFill(fillCol);
@@ -36,7 +47,12 @@ public class EllipseNode extends MMNode {
         //elps.setId("ellipse-"+nodes.size());
         elps.getStyleClass().add("ellipse");
         getChildren().addAll(elps,text);
-        registerDrag();
+
+        this.setTranslateX(90); //set init XY
+        this.setTranslateY(90);
+        addEdge();
+
+        registerEvent();
         System.out.println("Create Ellipse in Constructor");
     }
     private void resizeElps()
@@ -52,18 +68,29 @@ public class EllipseNode extends MMNode {
         System.out.println("width:"+width);
         System.out.println("hieght:"+height);
     }
-    private void registerDrag() {
-        EllipseNode self = this;
-        this.setOnMouseMoved(new EventHandler<MouseEvent>()
-        {
+    public void addEdge()
+    {
+        Edge rtnEdge = Edge.createEdge(this);
+        getChildren().add(rtnEdge);
+        edges.add(rtnEdge);
+    }
+    public double getSelfWidth()
+    {
+        return width;
+    }
+
+    public double getSelfHeight()
+    {
+        return height;
+    }
+    private void registerEvent() {
+        this.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event)
-            {
+            public void handle(MouseEvent event) {
                 //System.out.println("Movededdedede");
-                posX = event.getSceneX()-self.getTranslateX();
-                posY = event.getSceneY()-self.getTranslateY();
-                //System.out.println(posX+"XX");
-                //System.out.println(posY+"YY");
+                posX = event.getSceneX() - self.getTranslateX();
+                posY = event.getSceneY() - self.getTranslateY();
+                //getChildren().add(line);
             }
         });
         this.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -71,8 +98,8 @@ public class EllipseNode extends MMNode {
             public void handle(MouseEvent event) {
                 //System.out.println("Dragged");
                 //self.toFront();
-                self.setTranslateX(event.getSceneX()-posX);//-(event.getSceneX()-self.getTranslateX()));
-                self.setTranslateY(event.getSceneY()-posY);//-height);
+                self.setTranslateX(event.getSceneX() - posX);//-(event.getSceneX()-self.getTranslateX()));
+                self.setTranslateY(event.getSceneY() - posY);//-height);
                 /*System.out.println(self.getTranslateX()+"X");
                 System.out.println(event.getSceneX()+"XM");
                 System.out.println(posX+"XX");
@@ -100,11 +127,10 @@ public class EllipseNode extends MMNode {
                 getChildren().add(tField);
             }
         });
-        this.setOnKeyPressed(new EventHandler<KeyEvent>(){
+        this.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent event)
-            {
-                if(event.getCode() == KeyCode.ENTER) {
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
                     text.setText(tField.getText());
                     getChildren().remove(tField);
                     System.out.println("set text");
@@ -115,4 +141,5 @@ public class EllipseNode extends MMNode {
         });
     }
 }
+
 

@@ -70,9 +70,14 @@ public class EllipseNode extends MMNode {
     }
     public void addEdge()
     {
-        Edge rtnEdge = Edge.createEdge(this);
-        getChildren().add(rtnEdge);
-        edges.add(rtnEdge);
+        Edge fEdge = Edge.createFrontEdge(this);
+        Edge bEdge = Edge.createBackEdge(this);
+        getChildren().add(fEdge);
+        getChildren().add(bEdge);
+        fEdge.toBack();
+        bEdge.toBack();
+        edges.add(fEdge);
+        edges.add(bEdge);
     }
     public double getSelfWidth()
     {
@@ -110,12 +115,23 @@ public class EllipseNode extends MMNode {
         this.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                for(Edge edge: edges)
+                {
+                    if(!edge.getIsTempLine())
+                        edge.toBack();
+                    //edge.setVisible(false);
+                }
                 self.toBack();
             }
         });
         this.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                for(Edge edge: edges)
+                {
+                    edge.toFront();
+                    edge.setVisible(true);
+                }
                 self.toFront();
             }
         });

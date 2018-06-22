@@ -12,14 +12,14 @@ import java.util.ArrayList;
 public class MMLine extends MMNode{
     private MMNode sourceNode;
     private MMNode destNode;
-    private Line line = new Line();//10,10,200,200);
+    private Line tempLine = new Line();//10,10,200,200);
     private static ArrayList<MMLine> lineList = new ArrayList<MMLine>();
-    private Pane pane;
+    private static Pane pane;
     private double tempX;
     private double tempY;
     private MMLine(MMNode sourceNode,MMNode destNode)
     {
-        line = new Line(sourceNode.getTranslateX(),sourceNode.getTranslateY(),destNode.getTranslateX(),destNode.getTranslateY());
+        tempLine = new Line(sourceNode.getTranslateX(),sourceNode.getTranslateY(),destNode.getTranslateX(),destNode.getTranslateY());
     }
     private MMLine()
     {
@@ -27,9 +27,9 @@ public class MMLine extends MMNode{
         Circle c = new Circle();
         c.setRadius(2.0);
         c.setFill(new Color(0,0,0,1));
-        c.setCenterX(line.getStartX());
-        c.setCenterY(line.getStartY());
-        pane.getChildren().addAll(line,c);
+        c.setCenterX(tempLine.getStartX());
+        c.setCenterY(tempLine.getStartY());
+        pane.getChildren().addAll(tempLine,c);
     }
     public static MMLine CreateLine(MMNode sourceNode,MMNode destNode)
     {
@@ -39,20 +39,13 @@ public class MMLine extends MMNode{
     {
         return new MMLine();
     }
-    public void setTempX(double x)
+    public static void addLine(Edge src, Edge dest)
     {
-        tempX = x;
+        Line newLine = new Line(src.getTranslateX(),src.getTranslateY(),dest.getTranslateX(),dest.getTranslateY());
+        pane.getChildren().add(newLine);
     }
-    public void setTempY(double y)
+    private void removeTempLine()
     {
-        tempY = y;
-    }
-    public void createTempLine()
-    {
-        line.setStartY(1000);
-        line.setStartX(1000);
-        line.setEndX(800);
-        line.setEndY(800);
-        getChildren().add(line);
+        pane.getChildren().remove(tempLine);
     }
 }

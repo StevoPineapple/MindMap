@@ -2,6 +2,7 @@ package mindmap;
 
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -11,28 +12,31 @@ import javafx.scene.shape.Line;
 import java.util.ArrayList;
 
 public class Edge extends MMNode { // temp parent
-    private Color fillCol;
-    private Ellipse edge = new Ellipse();
+    private Pane mainPane = Main.getPane();
+    private Scene mainScene = Main.getScene();
+
     private ArrayList<MMLine> lineList = new ArrayList<MMLine>();
-    private Boolean isTempLine = false;
-    private double posX;
-    private double posY;
-    private Pane pane = Main.getPane();
     private Line tempLine;
+    private Boolean isTempLine = false;
+    private int lineOffSet = 3;
+
     private EllipseNode elps;
+    private Ellipse edge;
+
+    private boolean isFront;
+
     private Edge(EllipseNode elps,Boolean isFront) {
         //temp Color
+        Ellipse edge = new Ellipse();
+        this.isFront = isFront;
         this.elps = elps;
-        fillCol = Color.web("#449488");
+        this.edge = edge;
         edge.setRadiusX(4);
         edge.setRadiusY(4);
-        edge.setFill(fillCol);
-        if(isFront)
-            edge.setTranslateX(elps.getSelfWidth() / 2);
-        else
-            edge.setTranslateX(elps.getSelfWidth() / -2);
+        edge.setFill(Global.COLHUB);
+        poseEdge();
         edge.setTranslateY(0);
-        //edge.setVisible(false);
+
         getChildren().add(edge);
         registerEvent();
         System.out.println("Create Edge");
@@ -49,10 +53,20 @@ public class Edge extends MMNode { // temp parent
         return rtnEdge;
     }
 
+    public void poseEdge()
+    {
+        if(isFront)
+            edge.setTranslateX(elps.getSelfWidth() / 2);
+        else
+            edge.setTranslateX(elps.getSelfWidth() / -2);
+    }
+
     public void connectLines(Edge dest)
     {
         MMLine.addLine(this,dest);
     }
+
+
 
     public double getX()
     {
@@ -75,31 +89,32 @@ public class Edge extends MMNode { // temp parent
     }
     public void registerEvent() {
         Edge self = this;
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        edge.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(!isTempLine) {
                     isTempLine = true;
+                    Ellipse tempCirc = new Ellipse();
+                    tempCirc.setFill(Global.COLHUB);
                     tempLine = new Line();
-                    tempLine.setStroke(Color.web("#449488"));
+                    tempLine.setStroke(Global.COLHUB);
                     tempLine.setStrokeWidth(2);
-                    tempLine.setStartX(edge.getTranslateX() + elps.getTranslateX() + elps.getWidth() + 30); //30BUUG
-                    tempLine.setStartY(edge.getTranslateY() + elps.getTranslateY() + elps.getHeight() / 2);
-                    tempLine.setEndX(event.getSceneX());
-                    tempLine.setEndY(event.getSceneY());
-                    pane.getChildren().add(tempLine);
+                    tempLine.setStartX(elps.getTranslateX() + elps.getWidth() + edge.getTranslateX()+30); //30BUUG
+                    tempLine.setStartY(elps.getTranslateY() + elps.getHeight() / 2);
+                    tempLine.setEndX(event.getSceneX()-lineOffSet);
+                    tempLine.setEndY(event.getSceneY()-lineOffSet);
+                    mainPane.getChildren().add(tempLine);
                 }
-
             }
         });
 
-        Main.getScene().addEventFilter(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
+        mainPane.addEventFilter(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(isTempLine) {
-                    edge.setVisible(true);
-                    tempLine.setEndX(event.getSceneX());
-                    tempLine.setEndY(event.getSceneY());
+                    self.setVisible(true);
+                    tempLine.setEndX(event.getSceneX()-lineOffSet);
+                    tempLine.setEndY(event.getSceneY()+lineOffSet);
                     System.out.println(tempLine.getStartX()+"sX");
                     System.out.println(tempLine.getStartY()+"sY");
                     System.out.println(tempLine.getEndX()+"eX");
@@ -109,14 +124,14 @@ public class Edge extends MMNode { // temp parent
                 }
             }
         });
-        Main.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        mainPane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(isTempLine) {
-                        pane.getChildren().remove(tempLine);
+                    mainPane.getChildren().remove(tempLine);
                         isTempLine = !isTempLine;
                         self.toBack();
-                    }
+                        }
             }
         });
     }

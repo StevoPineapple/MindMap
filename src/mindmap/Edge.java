@@ -1,10 +1,12 @@
 package mindmap;
 
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
@@ -16,12 +18,15 @@ public class Edge extends MMNode { // temp parent
     private Scene mainScene = Main.getScene();
 
     private ArrayList<MMLine> lineList = new ArrayList<MMLine>();
-    private Line tempLine;
-    private Boolean isTempLine = false;
+    private static MMLine tempMMLine;
+    private Line tempLine = new Line();
+    private Ellipse tempCirc = new Ellipse();
+    private boolean isTempLine = false;
     private int lineOffSet = 3;
 
     private EllipseNode elps;
     private Ellipse edge;
+    private static ArrayList<Edge> edgeList = new ArrayList<Edge>();
 
     private boolean isFront;
 
@@ -31,12 +36,12 @@ public class Edge extends MMNode { // temp parent
         this.isFront = isFront;
         this.elps = elps;
         this.edge = edge;
-        edge.setRadiusX(4);
-        edge.setRadiusY(4);
+        edge.setRadiusX(6);
+        edge.setRadiusY(6);
         edge.setFill(Global.COLHUB);
         poseEdge();
         edge.setTranslateY(0);
-
+        edgeList.add(this);
         getChildren().add(edge);
         registerEvent();
         System.out.println("Create Edge");
@@ -61,41 +66,63 @@ public class Edge extends MMNode { // temp parent
             edge.setTranslateX(elps.getSelfWidth() / -2);
     }
 
-    public void connectLines(Edge dest)
+    public Ellipse getEdge()
     {
-        MMLine.addLine(this,dest);
+        return edge;
     }
 
-
-
-    public double getX()
-    {
-        return this.getTranslateX();
+    public EllipseNode getElps() {
+        return elps;
     }
 
-    public double getY()
+    private Edge checkTempLine()
     {
-        return this.getTranslateY();
+        for(Edge edge : edgeList)
+        {
+            if(edge.getIsTempLine())
+            {
+                return edge;
+            }
+        }
+        return null;
     }
 
-    public void setVisible()
+    public void switchIsTempLine()
     {
-        this.setVisible(false);
+        isTempLine = !isTempLine;
     }
 
     public boolean getIsTempLine()
     {
         return isTempLine;
     }
+
+    public double getX(){
+        return getParent().getTranslateX()+getLayoutX();
+    }
+
+    public double getY(){
+        return getParent().getTranslateY()+getLayoutY();
+    }
+
     public void registerEvent() {
         Edge self = this;
         edge.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!isTempLine) {
+                if(!Global.connecting) {
                     isTempLine = true;
-                    Ellipse tempCirc = new Ellipse();
+                    Global.connecting = true;
+
+                    tempCirc = new Ellipse();
                     tempCirc.setFill(Global.COLHUB);
+                    tempCirc.setRadiusX(2);
+                    tempCirc.setRadiusY(2);
+                    tempCirc.setTranslateX(event.getSceneX()-lineOffSet);
+                    tempCirc.setTranslateY(event.getSceneY()-lineOffSet);
+
+                    mainPane.getChildren().add(tempCirc);
+
                     tempLine = new Line();
                     tempLine.setStroke(Global.COLHUB);
                     tempLine.setStrokeWidth(2);
@@ -103,8 +130,19 @@ public class Edge extends MMNode { // temp parent
                     tempLine.setStartY(elps.getTranslateY() + elps.getHeight() / 2);
                     tempLine.setEndX(event.getSceneX()-lineOffSet);
                     tempLine.setEndY(event.getSceneY()-lineOffSet);
+
                     mainPane.getChildren().add(tempLine);
                 }
+                else {
+                    Edge tempLineEdge = self.checkTempLine();
+                    if(tempLineEdge!=null)
+                    {
+                        MMLine.createLine(tempLine,self);
+                        checkTempLine().switchIsTempLine();
+                        Global.connecting = false;
+                    }
+                }
+
             }
         });
 
@@ -112,26 +150,21 @@ public class Edge extends MMNode { // temp parent
             @Override
             public void handle(MouseEvent event) {
                 if(isTempLine) {
-                    self.setVisible(true);
+                    //self.setVisible(true);
                     tempLine.setEndX(event.getSceneX()-lineOffSet);
                     tempLine.setEndY(event.getSceneY()+lineOffSet);
-                    System.out.println(tempLine.getStartX()+"sX");
-                    System.out.println(tempLine.getStartY()+"sY");
-                    System.out.println(tempLine.getEndX()+"eX");
-                    System.out.println(tempLine.getEndY()+"eY");
-                    System.out.println(event.getSceneX()+"X");
-                    System.out.println(event.getSceneY());
+
+                    tempCirc.setTranslateX(tempLine.getEndX());
+                    tempCirc.setTranslateY(tempLine.getEndY());
+//
+//                    System.out.println(tempLine.getStartX()+"sX");
+//                    System.out.println(tempLine.getStartY()+"sY");
+//                    System.out.println(tempLine.getEndX()+"eX");
+//                    System.out.println(tempLine.getEndY()+"eY");
+//                    System.out.println(event.getSceneX()+"X");
+//                    System.out.println(event.getSceneY());
                 }
-            }
-        });
-        mainPane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(isTempLine) {
-                    mainPane.getChildren().remove(tempLine);
-                        isTempLine = !isTempLine;
-                        self.toBack();
-                        }
+                //System.out.println(self.toString()+"   "+isTempLine);
             }
         });
     }

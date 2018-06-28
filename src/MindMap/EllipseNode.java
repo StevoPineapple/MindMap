@@ -29,6 +29,9 @@ public class EllipseNode extends MMNode {
     private double posX;// = self.getTranslateX();
     private double posY;// = self.getTranslateY();
 
+    private double lastPosX = 0.0;
+    private double lastPosY = 0.0;
+
     private EllipseNode self = this;
     private ArrayList<Edge> edges = new ArrayList<Edge>();
 
@@ -95,7 +98,7 @@ public class EllipseNode extends MMNode {
         text.setText(tField.getText());
         getChildren().remove(tField);
         System.out.println("set text");
-        width = text.getBoundsInLocal().getWidth() + 15;
+        width = text.getBoundsInLocal().getWidth() + 20;
         resizeElps();
         reposEdge();
     }
@@ -113,6 +116,20 @@ public class EllipseNode extends MMNode {
     public double getSelfWidth()
     {
         return width;
+    }
+
+    public double getPosChangedX() {return self.getTranslateX()-lastPosX;}
+
+    public double getPosChangedY() {return self.getTranslateY()-lastPosY;}
+
+    protected boolean checkSelfEdge(Edge checkEdge)
+    {
+        for (Edge edge : edges)
+        {
+            if(edge.equals(checkEdge))
+                return true;
+        }
+        return false;
     }
 
     public double getSelfHeight()
@@ -141,15 +158,20 @@ public class EllipseNode extends MMNode {
         this.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //System.out.println("Dragged");
-                //self.toFront();
-                self.setTranslateX(event.getSceneX() - posX);//-(event.getSceneX()-self.getTranslateX()));
-                self.setTranslateY(event.getSceneY() - posY);//-height);
+                if (!Global.connecting) {
+                    lastPosX = self.getTranslateX();
+                    lastPosY = self.getTranslateY();
+                    self.setTranslateX(event.getSceneX() - posX);//-(event.getSceneX()-self.getTranslateX()));
+                    self.setTranslateY(event.getSceneY() - posY);
+                    MMLine.updateLinePos();
+                }//-height);
                 /*System.out.println(self.getTranslateX()+"X");
                 System.out.println(event.getSceneX()+"XM");
-                System.out.println(posX+"XX");
-                System.out.println(posY+"YY");
+                //System.out.println(posX+"XX");
+                //System.out.println(posY+"YY");
                 System.out.println(self.getTranslateX());*/
+                System.out.println(getPosChangedX()+" CX");
+                System.out.println(getPosChangedY()+" CY");
             }
         });
         this.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -181,15 +203,17 @@ public class EllipseNode extends MMNode {
             public void handle(MouseEvent event) {
                 if (editing) {
                     setNodeText();
+                    editing = false;
                 }
             }
         });
         this.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.ENTER)
+                if(event.getCode() == KeyCode.ENTER && editing)
                 {
                     setNodeText();
+                    editing = false;
                 }
             }
         });

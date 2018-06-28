@@ -1,13 +1,9 @@
 package mindmap;
 
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 
@@ -15,10 +11,8 @@ import java.util.ArrayList;
 
 public class Edge extends MMNode { // temp parent
     private Pane mainPane = Main.getPane();
-    private Scene mainScene = Main.getScene();
 
     private ArrayList<MMLine> lineList = new ArrayList<MMLine>();
-    private static MMLine tempMMLine;
     private Line tempLine = new Line();
     private Ellipse tempCirc = new Ellipse();
     private boolean isTempLine = false;
@@ -36,11 +30,13 @@ public class Edge extends MMNode { // temp parent
         this.isFront = isFront;
         this.elps = elps;
         this.edge = edge;
+
         edge.setRadiusX(6);
         edge.setRadiusY(6);
         edge.setFill(Global.COLHUB);
         poseEdge();
         edge.setTranslateY(0);
+
         edgeList.add(this);
         getChildren().add(edge);
         registerEvent();
@@ -66,15 +62,6 @@ public class Edge extends MMNode { // temp parent
             edge.setTranslateX(elps.getSelfWidth() / -2);
     }
 
-    public Ellipse getEdge()
-    {
-        return edge;
-    }
-
-    public EllipseNode getElps() {
-        return elps;
-    }
-
     private Edge checkTempLine()
     {
         for(Edge edge : edgeList)
@@ -97,6 +84,10 @@ public class Edge extends MMNode { // temp parent
         return isTempLine;
     }
 
+    public EllipseNode getElps() {
+        return elps;
+    }
+
     public double getX(){
         return getParent().getTranslateX()+getLayoutX();
     }
@@ -107,6 +98,7 @@ public class Edge extends MMNode { // temp parent
 
     public void registerEvent() {
         Edge self = this;
+
         edge.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -142,7 +134,6 @@ public class Edge extends MMNode { // temp parent
                         Global.connecting = false;
                     }
                 }
-
             }
         });
 
@@ -150,21 +141,12 @@ public class Edge extends MMNode { // temp parent
             @Override
             public void handle(MouseEvent event) {
                 if(isTempLine) {
-                    //self.setVisible(true);
                     tempLine.setEndX(event.getSceneX()-lineOffSet);
                     tempLine.setEndY(event.getSceneY()+lineOffSet);
 
                     tempCirc.setTranslateX(tempLine.getEndX());
                     tempCirc.setTranslateY(tempLine.getEndY());
-//
-//                    System.out.println(tempLine.getStartX()+"sX");
-//                    System.out.println(tempLine.getStartY()+"sY");
-//                    System.out.println(tempLine.getEndX()+"eX");
-//                    System.out.println(tempLine.getEndY()+"eY");
-//                    System.out.println(event.getSceneX()+"X");
-//                    System.out.println(event.getSceneY());
                 }
-                //System.out.println(self.toString()+"   "+isTempLine);
             }
         });
     }

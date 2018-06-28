@@ -11,6 +11,5 @@ public class ViewController {
 
         System.out.println("Clicked Ellipse");
         pane.getChildren().add(MMNode.create("Elps","text",pane));
-        //pane.getChildren().add(MMNode.create("Edge","",pane));
     }
 }

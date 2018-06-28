@@ -1,17 +1,13 @@
 package mindmap;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Ellipse;
-
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -39,10 +35,6 @@ public class EllipseNode extends MMNode {
 
     Ellipse elps = new Ellipse();
 
-    EllipseNode temp;
-    double tempX;
-    double tempY;
-
 
     public EllipseNode()
     {
@@ -54,7 +46,6 @@ public class EllipseNode extends MMNode {
         elps.setRadiusY(height/2);
         elps.setFill(fillCol);
         elps.setStroke(edgeCol);
-        //elps.setId("ellipse-"+nodes.size());
         elps.getStyleClass().add("ellipse");
         addEdge();
         getChildren().addAll(elps,text);
@@ -149,10 +140,8 @@ public class EllipseNode extends MMNode {
         this.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //System.out.println("Movededdedede");
                 posX = event.getSceneX() - self.getTranslateX();
                 posY = event.getSceneY() - self.getTranslateY();
-                //getChildren().add(line);
             }
         });
         this.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -164,14 +153,7 @@ public class EllipseNode extends MMNode {
                     self.setTranslateX(event.getSceneX() - posX);//-(event.getSceneX()-self.getTranslateX()));
                     self.setTranslateY(event.getSceneY() - posY);
                     MMLine.updateLinePos();
-                }//-height);
-                /*System.out.println(self.getTranslateX()+"X");
-                System.out.println(event.getSceneX()+"XM");
-                //System.out.println(posX+"XX");
-                //System.out.println(posY+"YY");
-                System.out.println(self.getTranslateX());*/
-                System.out.println(getPosChangedX()+" CX");
-                System.out.println(getPosChangedY()+" CY");
+                }
             }
         });
         this.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -181,7 +163,6 @@ public class EllipseNode extends MMNode {
                 {
                     if(!edge.getIsTempLine())
                         edge.toBack();
-                    //edge.setVisible(false);
                 }
                 self.toBack();
             }
@@ -192,7 +173,6 @@ public class EllipseNode extends MMNode {
                 for(Edge edge: edges)
                 {
                     edge.toFront();
-                    //edge.setVisible(true);
                 }
                 self.toFront();
                 text.toFront();

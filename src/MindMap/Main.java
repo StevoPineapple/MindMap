@@ -21,20 +21,13 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         Pane root = FXMLLoader.load(getClass().getResource("View.fxml"));
-        //Line redLine = new Line(10, 10, 200, 10);
         stage.setTitle("MindMap");
-        //root.getChildren().add(redLine);
         stage.setScene(new Scene(root));
         stage.show();
         Main.scene = stage.getScene();
         Main.pane = root;
     }
 
-
-    public static Scene getScene()
-    {
-        return scene;
-    }
     public static Pane getPane()
     {
         return pane;

@@ -22,14 +22,6 @@ public abstract class MMNode extends StackPane {
                 nodeList.add(node);
                 return node;
             }
-            /*case("Line"):
-            {
-                System.out.println("Line");
-                MMNode node = MMLine.createTempLine();
-                node.pane = pane;
-                nodeList.add(node);
-                return node;
-            }*/
         }
         return new EllipseNode();
     }

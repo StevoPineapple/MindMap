@@ -20,8 +20,8 @@ public class EllipseNode extends MMNode {
     private Color fillCol;
     private Color edgeCol;
 
-    private double width = 60;
-    private double height = 45;
+    private double width = 80;
+    private double height = 60;
     private double posX;// = self.getTranslateX();
     private double posY;// = self.getTranslateY();
 
@@ -41,7 +41,14 @@ public class EllipseNode extends MMNode {
         //temp Color
         fillCol = Color.WHITE;
         edgeCol = Color.web("#449488");
+
+        text.setScaleX(1.5);
+        text.setScaleY(1.5);
         text.setText("text");
+
+        tField.setScaleX(1.5);
+        tField.setScaleY(1.5);
+
         elps.setRadiusX(width/2);
         elps.setRadiusY(height/2);
         elps.setFill(fillCol);
@@ -60,18 +67,18 @@ public class EllipseNode extends MMNode {
 
     private void resizeElps()
     {
-        if(width<60) {
-            elps.setRadiusX(30);
-            width = 60;
+        if(width<80) {
+            elps.setRadiusX(40);
+            width = 80;
         }
         else
             elps.setRadiusX(width/2);
-        if(height<45) {
-            elps.setRadiusY(22.5);
-            height = 45;
+        if(height<60) {
+            elps.setRadiusY(30);
+            height = 60;
         }
         else
-            elps.setRadiusY(height/2);
+            elps.setRadiusY(height/2*width/80);
         System.out.println("width:"+width);
         System.out.println("hieght:"+height);
     }
@@ -89,7 +96,7 @@ public class EllipseNode extends MMNode {
         text.setText(tField.getText());
         getChildren().remove(tField);
         System.out.println("set text");
-        width = text.getBoundsInLocal().getWidth() + 20;
+        width = text.getBoundsInLocal().getWidth()*1.5 + 40;
         resizeElps();
         reposEdge();
     }
@@ -123,10 +130,19 @@ public class EllipseNode extends MMNode {
         return false;
     }
 
-    public double getSelfHeight()
+    private void updateLinePos()
     {
-        return height;
+        ArrayList<MMLine> lineList = MMLine.getLineList();
+        for(MMLine mLine : lineList)
+        {
+            mLine.getLine().setStartX(mLine.getSrcEdge().getX()+mLine.getSrcEdge().getEdge().getTranslateX()+mLine.getSrcEdge().getWidth()+40);
+            mLine.getLine().setStartY(mLine.getSrcEdge().getY()+mLine.getSrcEdge().getHeight()/2);
+            mLine.getLine().setEndX(mLine.getDestEdge().getX()+mLine.getDestEdge().getEdge().getTranslateX()+mLine.getDestEdge().getWidth()+40);
+            mLine.getLine().setEndY(mLine.getDestEdge().getY()+mLine.getDestEdge().getHeight()/2);
+            System.out.println(mLine.getSrcEdge().getEdge().getTranslateX());
+        }
     }
+
     private void registerEvent() {
         text.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -152,7 +168,7 @@ public class EllipseNode extends MMNode {
                     lastPosY = self.getTranslateY();
                     self.setTranslateX(event.getSceneX() - posX);//-(event.getSceneX()-self.getTranslateX()));
                     self.setTranslateY(event.getSceneY() - posY);
-                    MMLine.updateLinePos();
+                    updateLinePos();
                 }
             }
         });
@@ -170,20 +186,12 @@ public class EllipseNode extends MMNode {
         this.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                for(Edge edge: edges)
-                {
-                    edge.toFront();
-                }
-                self.toFront();
-                text.toFront();
-            }
-        });
-        mainPane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (editing) {
-                    setNodeText();
-                    editing = false;
+                if(!editing) {
+                    for (Edge edge : edges) {
+                        edge.toFront();
+                    }
+                    self.toFront();
+                    text.toFront();
                 }
             }
         });

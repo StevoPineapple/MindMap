@@ -22,7 +22,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception{
         Pane root = FXMLLoader.load(getClass().getResource("View.fxml"));
         stage.setTitle("MindMap");
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(root,1280,720));
         stage.show();
         Main.scene = stage.getScene();
         Main.pane = root;

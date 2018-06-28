@@ -31,8 +31,8 @@ public class Edge extends MMNode { // temp parent
         this.elps = elps;
         this.edge = edge;
 
-        edge.setRadiusX(6);
-        edge.setRadiusY(6);
+        edge.setRadiusX(8);
+        edge.setRadiusY(8);
         edge.setFill(Global.COLHUB);
         poseEdge();
         edge.setTranslateY(0);
@@ -84,6 +84,10 @@ public class Edge extends MMNode { // temp parent
         return isTempLine;
     }
 
+    public Ellipse getEdge() {
+        return edge;
+    }
+
     public EllipseNode getElps() {
         return elps;
     }
@@ -95,6 +99,8 @@ public class Edge extends MMNode { // temp parent
     public double getY(){
         return getParent().getTranslateY()+getLayoutY();
     }
+
+
 
     public void registerEvent() {
         Edge self = this;
@@ -108,8 +114,8 @@ public class Edge extends MMNode { // temp parent
 
                     tempCirc = new Ellipse();
                     tempCirc.setFill(Global.COLHUB);
-                    tempCirc.setRadiusX(2);
-                    tempCirc.setRadiusY(2);
+                    tempCirc.setRadiusX(3);
+                    tempCirc.setRadiusY(3);
                     tempCirc.setTranslateX(event.getSceneX()-lineOffSet);
                     tempCirc.setTranslateY(event.getSceneY()-lineOffSet);
 
@@ -117,8 +123,8 @@ public class Edge extends MMNode { // temp parent
 
                     tempLine = new Line();
                     tempLine.setStroke(Global.COLHUB);
-                    tempLine.setStrokeWidth(2);
-                    tempLine.setStartX(elps.getTranslateX() + elps.getWidth() + edge.getTranslateX()+30); //30BUUG
+                    tempLine.setStrokeWidth(3);
+                    tempLine.setStartX(elps.getTranslateX() + elps.getWidth() + edge.getTranslateX()+40); //30BUUG
                     tempLine.setStartY(elps.getTranslateY() + elps.getHeight() / 2);
                     tempLine.setEndX(event.getSceneX()-lineOffSet);
                     tempLine.setEndY(event.getSceneY()-lineOffSet);
@@ -129,8 +135,10 @@ public class Edge extends MMNode { // temp parent
                     Edge tempLineEdge = self.checkTempLine();
                     if(tempLineEdge!=null)
                     {
-                        MMLine.createLine(tempLine,self);
-                        checkTempLine().switchIsTempLine();
+                        Edge srcEdge = checkTempLine();
+                        mainPane.getChildren().remove(srcEdge.tempCirc);
+                        MMLine.createLine(srcEdge.tempLine,srcEdge,self);
+                        srcEdge.switchIsTempLine();
                         Global.connecting = false;
                     }
                 }

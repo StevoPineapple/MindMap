@@ -12,27 +12,35 @@ public class MMLine extends MMNode{
 
     private EllipseNode elps;
     private Line line;
-    private Edge edge;
+    private Edge srcEdge;
+    private Edge destEdge;
 
-    private MMLine(Line line,Edge edge)
+    private MMLine(Line line,Edge srcEdge, Edge destEdge)
     {
         this.line = line;
-        this.edge = edge;
-        this.elps = edge.getElps();
+        this.srcEdge = srcEdge;
+        this.destEdge = destEdge;
         line.toBack();
         lineList.add(this);
     }
-    public static MMLine createLine(Line line,Edge edge)
+    public static MMLine createLine(Line line,Edge srcEdge, Edge destEdge)
     {
-        return new MMLine(line,edge);
+        return new MMLine(line,srcEdge,destEdge);
     }
 
-    public static void updateLinePos()
-    {
-        for(MMLine mLine : lineList)
-        {
-            mLine.line.setStartX(mLine.edge.getX());
-            mLine.line.setStartX(mLine.edge.getY());
-        }
+    public static ArrayList<MMLine> getLineList() {
+        return lineList;
+    }
+
+    public Line getLine() {
+        return line;
+    }
+
+    public Edge getDestEdge() {
+        return destEdge;
+    }
+
+    public Edge getSrcEdge() {
+        return srcEdge;
     }
 }

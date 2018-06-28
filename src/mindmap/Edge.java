@@ -124,7 +124,8 @@ public class Edge extends MMNode { // temp parent
                     tempLine = new Line();
                     tempLine.setStroke(Global.COLHUB);
                     tempLine.setStrokeWidth(3);
-                    tempLine.setStartX(elps.getTranslateX() + elps.getWidth() + edge.getTranslateX()+40); //30BUUG
+                    tempLine.setStartX(getX()+edge.getTranslateX()+getElps().getSelfWidth()/2+80);
+
                     tempLine.setStartY(elps.getTranslateY() + elps.getHeight() / 2);
                     tempLine.setEndX(event.getSceneX()-lineOffSet);
                     tempLine.setEndY(event.getSceneY()-lineOffSet);

@@ -78,7 +78,7 @@ public class EllipseNode extends MMNode {
             height = 60;
         }
         else
-            elps.setRadiusY(height/2*width/80);
+            elps.setRadiusY(height/2);
         System.out.println("width:"+width);
         System.out.println("hieght:"+height);
     }
@@ -135,9 +135,9 @@ public class EllipseNode extends MMNode {
         ArrayList<MMLine> lineList = MMLine.getLineList();
         for(MMLine mLine : lineList)
         {
-            mLine.getLine().setStartX(mLine.getSrcEdge().getX()+mLine.getSrcEdge().getEdge().getTranslateX()+mLine.getSrcEdge().getWidth()+40);
+            mLine.getLine().setStartX(mLine.getSrcEdge().getX()+mLine.getSrcEdge().getEdge().getTranslateX()+mLine.getSrcEdge().getElps().getSelfWidth()/2+80);
             mLine.getLine().setStartY(mLine.getSrcEdge().getY()+mLine.getSrcEdge().getHeight()/2);
-            mLine.getLine().setEndX(mLine.getDestEdge().getX()+mLine.getDestEdge().getEdge().getTranslateX()+mLine.getDestEdge().getWidth()+40);
+            mLine.getLine().setEndX(mLine.getDestEdge().getX()+mLine.getDestEdge().getEdge().getTranslateX()+mLine.getDestEdge().getElps().getSelfWidth()/2+80);
             mLine.getLine().setEndY(mLine.getDestEdge().getY()+mLine.getDestEdge().getHeight()/2);
             System.out.println(mLine.getSrcEdge().getEdge().getTranslateX());
         }
@@ -202,6 +202,7 @@ public class EllipseNode extends MMNode {
                 {
                     setNodeText();
                     editing = false;
+                    updateLinePos();
                 }
             }
         });
